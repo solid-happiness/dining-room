@@ -12,8 +12,33 @@
             "name": "Экономный обед",
             "dishes": [
                 {
-                    "id": 25,
+                    "id": 223455,
                     "name": "Капуста б/к с овощами, растительным маслом",
+                    "img": "/cabbage.jpg",
+                    "price": "3500",
+                    "portion": "120 г",
+                    "netWeight": 120,
+                    "proteins": 2.88,
+                    "fats": 3,
+                    "carbohydrates": 3,
+                    "calorific": 200000
+                },
+                {
+                    "id": 123,
+                    "name": "Капуста б/к с овощами, растительным маслом",
+                    "img": "/cabbage.jpg",
+                    "price": "3500",
+                    "portion": "120 г",
+                    "netWeight": 120,
+                    "proteins": 2.88,
+                    "fats": 3,
+                    "carbohydrates": 3,
+                    "calorific": 200000
+                },
+                {
+                    "id": 26,
+                    "name": "Капуста б/к с овощами, растительным маслом",
+                    "img": "/cabbage.jpg",
                     "price": "3500",
                     "portion": "120 г",
                     "netWeight": 120,
@@ -30,8 +55,9 @@
             "name": "Диетические блюда",
             "dishes": [
                 {
-                    "id": 26,
+                    "id": 3245,
                     "name": "Каша молочная манная с маслом",
+                    "img": "/milk-porridge.jpg",
                     "price": "4000",
                     "portion": "250 г",
                     "netWeight": 250,

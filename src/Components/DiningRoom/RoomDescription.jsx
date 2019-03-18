@@ -2,30 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
-import { CardContent } from '@material-ui/core';
+import CardContent from '@material-ui/core/CardContent';
 
-const Container = styled.section`
-    display: grid;
-    grid: 1fr / 300px 1fr;
-    justify-items: center;
-    margin-top: 15px;
-    
-    @media screen and (max-width: 720px) {
-        grid: 1fr 1fr / 1fr;
+const Content = styled(Typography)`
+    && {
+        font-size: 1rem;
+        font-family: "Lora", serif;
     }
-`;
-
-const Appearance = styled.img`
-    width: 30%;
-    min-width: 250px;
-    margin-right: 30px;
-    border-radius: 4px;
-    overflow: hidden;
 `;
 
 const RoomDescription = ({ 
@@ -44,6 +31,7 @@ const RoomDescription = ({
             }}
             titleTypographyProps={{
                 color: 'secondary',
+                variant: 'h6',
             }}
             subheader={`Время работы: ${openTime}:${closeTime}`}
         />
@@ -54,13 +42,8 @@ const RoomDescription = ({
                 className={classes.media}
             />
         )}
-        {/* <Container>
-            <Typography color="textSecondary">
-                {description}
-            </Typography>
-        </Container> */}
         <CardContent>
-            {description}
+            <Content color="textPrimary">{description}</Content>
         </CardContent>
     </Card>
 )

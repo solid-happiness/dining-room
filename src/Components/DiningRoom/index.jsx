@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Layout from '../Layout';
 import MainSection from '../MainSection';
 import Loader from '../Loader';
@@ -102,7 +100,12 @@ const DiningRoom = ({ match }) => {
                         К списку столовых
                     </BackButton>
                     <RoomDescription {...room} />
-                    {room.menuGroups.map((menu) => <MenuGroup menu={menu} />)}
+                    {room.menuGroups.map((menuGroup) => (
+                        <MenuGroup
+                            key={menuGroup.id} 
+                            menuGroup={menuGroup} 
+                        />
+                    ))}
                 </Container>
             </MainSection>
         </Layout>
