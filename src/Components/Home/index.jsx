@@ -5,14 +5,10 @@ import Layout from '../Layout';
 import Header from './Header';
 import DiningRooms from './DiningRooms';
 import Feedback from './Feedback';
-import mainBackground from './main-background.svg';
+import MainSection from '../MainSection';
 
 const Section = styled.section`
-  margin: 50px 0;
-  ${({ main }) => main && `
-    background-image: url("${mainBackground}");
-    background-size: cover;
-  `}
+  margin: 64px 0;
 `;
 
 const Home = () => (
@@ -20,10 +16,10 @@ const Home = () => (
     <Section>
       <Header />
     </Section>
-    <Section main>
+    <MainSection>
       <DiningRooms />
       <Feedback />
-    </Section>
+    </MainSection>
   </Layout>
 );
 
