@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHamburger } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
@@ -7,10 +8,18 @@ import { withTheme } from '@material-ui/core';
 
 const Container = styled.header`
     display: flex;
-    max-width: 1200px;
     justify-content: space-around;
     align-items: center;
-    min-height: 64px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background: rgb(250, 250, 250);
+`;
+
+const HomePageLink = styled(Link)`
+    text-decoration: none;
 `;
 
 const Logo = styled.aside`
@@ -40,18 +49,20 @@ const Delivery = styled(Typography)`
 
 const SiteHeader = ({ theme }) => (
     <Container>
-        <Logo>
-            <LogoIcon
-                icon={faHamburger}
-                color={theme.palette.primary.main}
-            />
-            <Typography
-                variant="h6"
-                inline
-            >
-                МГТУ им. Н.Э. Баумана
-            </Typography>
-        </Logo>
+        <HomePageLink to="/">
+            <Logo>
+                <LogoIcon
+                    icon={faHamburger}
+                    color={theme.palette.primary.main}
+                />
+                <Typography
+                    variant="h6"
+                    inline
+                >
+                    МГТУ им. Н.Э. Баумана
+                </Typography>
+            </Logo>
+        </HomePageLink>
         <Menu>
             <Delivery
                 variant="body1"

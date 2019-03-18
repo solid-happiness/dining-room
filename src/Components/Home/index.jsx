@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core';
 
+import Layout from '../Layout';
 import Header from './Header';
 import DiningRooms from './DiningRooms';
 import Feedback from './Feedback';
@@ -15,8 +15,8 @@ const Section = styled.section`
   `}
 `;
 
-const Home = ({ theme }) => (
-  <>
+const Home = () => (
+  <Layout>
     <Section>
       <Header />
     </Section>
@@ -24,7 +24,7 @@ const Home = ({ theme }) => (
       <DiningRooms />
       <Feedback />
     </Section>
-  </>
+  </Layout>
 );
 
-export default withTheme()(Home);
+export default Home;

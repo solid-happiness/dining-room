@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 import { withTheme } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
@@ -11,14 +12,17 @@ const diningRooms = [
   { 
     name: 'Кафетерий',
     icon: coffeeIcon,
+    slug: 'coffee',
   },
   { 
     name: 'Пельменная',
     icon: dumplingIcon,
+    slug: 'dumpling',
   },
   { 
     name: 'Столовая',
     icon: hotDishIcon,
+    slug: 'hot-dish',
   }
 ];
 
@@ -56,13 +60,13 @@ const Title = styled.header`
   font-size: 3rem;
 `;
 
-const DiningRooms = ({ theme }) => (
+const DiningRooms = ({ theme, history }) => (
     <Container>
-      {diningRooms.map(({ name, icon }) => (
+      {diningRooms.map(({ name, icon, slug }) => (
         <Item
           icon={icon}
           alt={name}
-          key={name}
+          key={slug}
           color={theme.palette.secondary.main}
         >
           <Title color={theme.palette.primary.main}>
@@ -71,12 +75,13 @@ const DiningRooms = ({ theme }) => (
           <Button
             variant="contained"
             color="primary"
+            onClick={() => history.push(`/${slug}/`)}
           >
             Описание
           </Button>
         </Item>
       ))}
     </Container>
-)
+);
 
-export default withTheme()(DiningRooms);
+export default withRouter(withTheme()(DiningRooms));

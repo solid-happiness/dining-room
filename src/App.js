@@ -3,9 +3,9 @@ import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
 import Home from './Components/Home';
-import SiteHeader from './Components/SiteHeader';
-import Footer from './Components/Footer';
+import DiningRoom from './Components/DiningRoom';
 
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -31,11 +31,10 @@ const App = () => (
     <CssBaseline />
     <GlobalStyles />
     <MuiThemeProvider theme={theme}>
-      <SiteHeader />
       <Router>
         <Route path="/" component={Home} exact />
+        <Route path="/:diningRoomSlug/" component={DiningRoom} />
       </Router>
-      <Footer />
     </MuiThemeProvider>
   </>
 )
