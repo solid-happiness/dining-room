@@ -139,7 +139,6 @@ class Shedule(models.Model):
         weekday = datetime.today().weekday()
         open = getattr(self, f'{DAY_NAMES[weekday][0]}_open')
         close = getattr(self, f'{DAY_NAMES[weekday][0]}_close')
-        print(open, close)
         return open, close
 
     class Meta:
@@ -197,6 +196,15 @@ class DiningRoom(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        open_time, close_time = self.schedule.get_open_time()
+        return {
+            'name': self.name,
+            'description': self.description,
+            'openTime': open_time,
+            'closeTime': close_time,
+        }
 
     class Meta:
         verbose_name = 'Столовая'

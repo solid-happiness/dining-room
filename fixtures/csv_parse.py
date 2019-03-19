@@ -57,7 +57,7 @@ for iter, filename in enumerate(CSV_FILES):
                 )
                 menu_items.append(menu_item)
             else:
-                category = DishCategory.objects.create(
+                category = DishCategory.objects.get_or_create(
                     name=item[0],
                     slug=translit(item[0].lower().replace(' ', '-'), reversed=True),
                 )
