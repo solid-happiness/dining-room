@@ -16,6 +16,12 @@ class MenuItem(models.Model):
         verbose_name='Категория',
         on_delete=models.CASCADE,
     )
+    photo = models.ImageField(
+        'Фото блюда',
+        upload_to='dishes',
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return str(self.dish)
@@ -109,6 +115,12 @@ class DiningRoom(models.Model):
     slug = models.CharField('slug', max_length=64, unique=True)
     schedule = models.ForeignKey('Shedule', verbose_name='Расписание', on_delete=models.CASCADE)
     description = models.CharField('Описание столовой', max_length=512, default='')
+    photo = models.ImageField(
+        'Фото заведения',
+        upload_to='dining-room',
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
