@@ -16,6 +16,7 @@ const Container = styled.header`
     width: 100%;
     height: 64px;
     background: rgb(250, 250, 250);
+    z-index: 5;
 `;
 
 const HomePageLink = styled(Link)`

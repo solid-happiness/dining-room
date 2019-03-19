@@ -11,6 +11,9 @@ class Dish(models.Model):
     carbohydrates = models.FloatField('Углеводы (на 100г.)', default=0)
     calorific = models.IntegerField('Калорийность (на 100г.)', default=0)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'Блюдо'
         verbose_name_plural = 'Блюда'

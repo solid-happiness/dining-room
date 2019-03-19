@@ -78,3 +78,6 @@ db.sqlite3
 .venv
 env/
 venv/
+.idea
+server/eatery/migrations
+server/dish/migrations

@@ -10,6 +10,7 @@ import DiningRoom from './Components/DiningRoom';
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
   @import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+  @import url('https://fonts.googleapis.com/css?family=Lora');
 `;
 
 const theme = createMuiTheme({
