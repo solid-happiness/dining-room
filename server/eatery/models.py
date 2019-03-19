@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import time
 
+
 # Create your models here.
 
 
@@ -9,10 +10,11 @@ class MenuItem(models.Model):
     price = models.IntegerField('Цена', default=0)
     portion = models.CharField('Граммовка', max_length=64, default='0')
     net_weight = models.FloatField('Масса нетто', default=0)
-    category = models.ForeignKey('DishCategory', verbose_name='Категория', on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey('DishCategory', verbose_name='Категория', on_delete=models.SET_NULL, null=True,
+                                 blank=True)
 
     def __str__(self):
-        return self.dish.__str__()
+        return str(self.dish)
 
     class Meta:
         verbose_name = 'Пункт меню'
@@ -23,6 +25,9 @@ class DishCategory(models.Model):
     name = models.CharField('Название категории', max_length=128)
     slug = models.CharField('slug', max_length=64)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'Категория блюд'
         verbose_name_plural = 'Категории блюд'
@@ -32,7 +37,7 @@ class HoliDay(models.Model):
     day = models.DateField(verbose_name='дата выходного дня')
 
     def __str__(self):
-        return f'{self.day}'
+        return str(self.day)
 
     class Meta:
         verbose_name = 'Выходной день'
@@ -42,6 +47,9 @@ class HoliDay(models.Model):
 class Shedule(models.Model):
     holidays = models.ManyToManyField(HoliDay, verbose_name='Выходные')
 
+    def __str__(self):
+        return f'Расписание {self.pk}'
+
     class Meta:
         verbose_name = 'Расписание работы'
         verbose_name_plural = 'Расписания работы'
@@ -49,13 +57,13 @@ class Shedule(models.Model):
 
 # добавим поля времени открытия и закрытия по дням недели
 DAY_NAMES = (
-        ('mon', 'Понедельник'),
-        ('tue', 'Вторник'),
-        ('wed', 'Среда'),
-        ('thu', 'Четверг'),
-        ('fri', 'Пятница'),
-        ('sat', 'Суббота'),
-        ('sun', 'Воскресенье')
+    ('mon', 'Понедельник'),
+    ('tue', 'Вторник'),
+    ('wed', 'Среда'),
+    ('thu', 'Четверг'),
+    ('fri', 'Пятница'),
+    ('sat', 'Суббота'),
+    ('sun', 'Воскресенье')
 )
 for day, day_name in DAY_NAMES:
     Shedule.add_to_class(f'{day}_open', models.TimeField(verbose_name=f'{day_name} - открытие', default=time(0, 0)))
@@ -64,8 +72,8 @@ for day, day_name in DAY_NAMES:
 
 class DiningRoom(models.Model):
     name = models.CharField('Название столовой', max_length=128)
-    slug = models.CharField('slug', max_length=64)
-    schedule = models.ForeignKey('Shedule',verbose_name='Расписание', on_delete=models.CASCADE)
+    slug = models.CharField('slug', max_length=64, unique=True)
+    schedule = models.ForeignKey('Shedule', verbose_name='Расписание', on_delete=models.CASCADE)
     description = models.CharField('Описание столовой', max_length=512, default='')
 
     def __str__(self):
@@ -87,10 +95,14 @@ class WeekDay(models.Model):
     def __str__(self):
         return self.get_day_display()
 
+    class Meta:
+        verbose_name = 'День недели'
+        verbose_name_plural = 'Дни недели'
+
 
 # модель меню для заведения
-class DindingRoomMenu(models.Model):
-    dinding_room = models.ForeignKey(
+class DiningRoomMenu(models.Model):
+    dining_room = models.ForeignKey(
         DiningRoom,
         verbose_name='Заведение',
         on_delete=models.CASCADE,
@@ -105,7 +117,8 @@ class DindingRoomMenu(models.Model):
     )
 
     def __str__(self):
-        return self.dinding_room.__str__()
+        weekday_list = map(str, list(self.weekday.all()))
+        return f'{self.dining_room} ({", ".join(weekday_list)})'
 
     class Meta:
         verbose_name = 'Меню'
