@@ -29,6 +29,7 @@ class MenuItem(models.Model):
     category = models.ForeignKey(
         'DishCategory',
         verbose_name='Категория',
+        help_text='При отсутствии категорий в меню необходимо добавить категорию с пустыми значениями.',
         on_delete=models.CASCADE,
     )
     photo = models.ImageField(
@@ -178,9 +179,10 @@ class DiningRoom(models.Model):
         max_length=64,
         unique=True
     )
-    schedule = models.ForeignKey(
+    schedule = models.OneToOneField(
         'Shedule',
         verbose_name='Расписание',
+        help_text='Расписание уникально для каждого заведения (необходимо создать новое).',
         on_delete=models.CASCADE
     )
     description = models.CharField(
