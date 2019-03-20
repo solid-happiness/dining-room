@@ -11,7 +11,7 @@ module.exports = require('./webpack.base')({
   mode: 'production',
   entry: [
     require.resolve('react-app-polyfill/ie11'),
-    path.join(process.cwd(), 'src/index.js'),
+    path.join(process.cwd(), 'client/index.jsx'),
   ],
 
   output: {
@@ -69,7 +69,7 @@ module.exports = require('./webpack.base')({
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: 'client/index.html',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -116,7 +116,7 @@ module.exports = require('./webpack.base')({
       ios: true,
       icons: [
         {
-          src: path.resolve('src/favicon.ico'),
+          src: path.resolve('client/favicon.ico'),
           sizes: [72, 96, 128, 144, 192, 384, 512],
         },
       ],

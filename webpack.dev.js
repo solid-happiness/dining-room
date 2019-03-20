@@ -11,7 +11,7 @@ module.exports = require('./webpack.base')({
   mode: 'development',
   entry: [
     require.resolve('react-app-polyfill/ie11'),
-    path.join(__dirname, 'src/index.jsx'),
+    path.join(__dirname, 'client/index.jsx'),
   ],
   output: {
     filename: '[name].js',
@@ -26,7 +26,7 @@ module.exports = require('./webpack.base')({
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       inject: true,
-      template: 'src/index.html',
+      template: 'client/index.html',
     }),
     new CircularDependencyPlugin({
       exclude: /a\.js|node_modules/, // exclude node_modules
