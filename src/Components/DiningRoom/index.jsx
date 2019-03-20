@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { generate } from 'shortid';
 import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,9 +22,10 @@ const Container = styled.div`
     align-items: center;
 `;
 
-const BackButton = styled(Button)`
+const BackLink = styled(Link)`
     && {
         align-self: flex-start;
+        text-decoration: none;
         margin-bottom: 20px;
     }
 `;
@@ -128,15 +130,21 @@ const DiningRoom = ({ match }) => {
         );
     })
 
+    React.useEffect(() => {
+        document.title = room.name;
+    }, [room])
+
     return (
         <Layout>
             <MainSection>
                 <Container>
                     <Loader fullscreen loading={room.loading} />
-                    <BackButton>
-                        <BackIcon icon={faHandPointLeft} />
-                        К списку столовых
-                    </BackButton>
+                    <BackLink to="/">
+                        <Button>
+                            <BackIcon icon={faHandPointLeft} />
+                            К списку столовых
+                        </Button>
+                    </BackLink>
                     <RoomDescription {...room} />
                     {room.menuGroups.map((menuGroup) => (
                         <MenuGroup
@@ -150,9 +158,7 @@ const DiningRoom = ({ match }) => {
             <Basket
                 selectedDishes={selectedDishes}
                 setShowCart={setShowCart}
-                onDelete={removingDish => setDishes(
-                    selectedDishes.filter(dish => dish.key !== removingDish.key),
-                )}
+                onDelete={dishes => setDishes(dishes)}
                 showCart={showCart}
                 diningRoomName={room.name}
             />

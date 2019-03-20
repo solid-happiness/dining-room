@@ -27,17 +27,23 @@ const theme = createMuiTheme({
   }
 })
 
-const App = () => (
-  <>
-    <CssBaseline />
-    <GlobalStyles />
-    <MuiThemeProvider theme={theme}>
-      <Router>
-        <Route path="/" component={Home} exact />
-        <Route path="/:diningRoomSlug/" component={DiningRoom} />
-      </Router>
-    </MuiThemeProvider>
-  </>
-)
+const App = () => {
+  React.useEffect(() => {
+    document.title = 'Похавай!';
+  }, [])
+
+  return (
+    <>
+      <CssBaseline />
+      <GlobalStyles />
+      <MuiThemeProvider theme={theme}>
+        <Router>
+          <Route path="/" component={Home} exact />
+          <Route path="/:diningRoomSlug/" component={DiningRoom} />
+        </Router>
+      </MuiThemeProvider>
+    </>
+  )
+}
 
 export default App;

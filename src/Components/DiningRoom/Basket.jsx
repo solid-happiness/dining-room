@@ -170,14 +170,20 @@ const Basket = ({
                 <AddToCartIcon icon={faShoppingBasket} />
                 <GoodsNumbers>{selectedDishes.length}</GoodsNumbers>
             </AddToCartButton>
-            <Dialog open={showCheckoutAlert}>
+            <Dialog
+                open={showCheckoutAlert}
+            >
                 <CheckoutDialogText>
                     {`Ваш заказ успешно оформлен и ожидает в столовой ${diningRoomName}`}
                 </CheckoutDialogText>
                 <DialogActions>
                     <Button
                         color="primary"
-                        onClick={() => setShowCheckoutAlert(false)}
+                        onClick={() => {
+                            setShowCheckoutAlert(false);
+                            setShowCart(false);
+                            onDelete([]);
+                        }}
                     >
                         OK
                     </Button>
@@ -196,18 +202,22 @@ const Basket = ({
                     {selectedDishes.length !== 0 && (
                         <SummariesCard>
                             <CardContent>
-                                <SummariesTitle variant="body1" align="left">
-                                    Итоговая стоимость:
+                                <div>
+                                    <SummariesTitle variant="body1" align="left" inline>
+                                        Итоговая стоимость:
+                                    </SummariesTitle>
                                     <Typography variant="body2" inline>
                                         {` ${summaries.price} руб.`}
                                     </Typography>
-                                </SummariesTitle>
-                                <SummariesTitle variant="body1" align="left">
-                                    Общее К/Б/Ж/У:
+                                </div>
+                                <div>
+                                    <SummariesTitle variant="body1" align="left">
+                                        Общее К/Б/Ж/У:
+                                    </SummariesTitle>
                                     <Typography variant="body2" inline>
                                         {` ${summaries.calorific}/${summaries.proteins}/${summaries.fats}/${summaries.carbohydrates}`}
                                     </Typography>
-                                </SummariesTitle>
+                                </div>
                             </CardContent>
                             <СheckoutButton
                                 color="primary"
@@ -220,7 +230,9 @@ const Basket = ({
                     )}
                     {selectedDishes.map((dish) => (
                         <DishCard key={dish.key}>
-                            <DeleteButton onClick={() => onDelete(dish)}>
+                            <DeleteButton onClick={() => onDelete(
+                                selectedDishes.filter(selectedDish => selectedDish.key !== dish.key),
+                            )}>
                                 <DeleteIcon icon={faPlus} color="white" />
                             </DeleteButton>
                             <CardMedia image={dish.img} title={dish.name} />
