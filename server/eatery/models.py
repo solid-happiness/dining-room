@@ -3,14 +3,28 @@ from datetime import time, datetime
 import itertools
 
 
-# Create your models here.
-
-
 class MenuItem(models.Model):
+    """
+    Модель пункта меню.
+    Содержит блюдо и его товарные характеристики.
+    """
     dish = models.ForeignKey('dish.Dish', verbose_name='Блюдо', on_delete=models.CASCADE)
-    price = models.IntegerField('Цена', default=0)
-    portion = models.CharField('Граммовка', max_length=64, default='0')
-    net_weight = models.FloatField('Масса нетто', default=0)
+    price = models.IntegerField(
+        'Цена',
+        help_text='Цена выражается в копейках.',
+        default=0
+    )
+    portion = models.CharField(
+        'Граммовка',
+        help_text='Строковое представление для отображения на странице. Например: 250/25.',
+        max_length=64,
+        default='0',
+    )
+    net_weight = models.FloatField(
+        'Масса нетто',
+        help_text='Полная масса готового блюда. Если оно составное, то суммарный вес всех входящих продуктов.',
+        default=0
+    )
     category = models.ForeignKey(
         'DishCategory',
         verbose_name='Категория',
@@ -31,6 +45,9 @@ class MenuItem(models.Model):
         verbose_name_plural = 'Пункты меню'
 
     def to_dict(self):
+        """
+        Метод для удобства возврата экземпляра модели и последующей конвертации в json.
+        """
         return {
             "id": self.id,
             "name": self.dish.name,
@@ -40,13 +57,25 @@ class MenuItem(models.Model):
             "proteins": self.dish.proteins * self.net_weight / 100,
             "fats": self.dish.fats * self.net_weight / 100,
             "carbohydrates": self.dish.carbohydrates * self.net_weight / 100,
-            "calorific": self.dish.calorific / 1000
+            "calorific": self.dish.calorific / 1000,
+            "photo": str(self.photo) and self.photo.url,
         }
 
 
 class DishCategory(models.Model):
-    name = models.CharField('Название категории', max_length=128)
-    slug = models.CharField('slug', max_length=64, unique=True)
+    """
+    Модель категории блюд в меню заведения
+    """
+    name = models.CharField(
+        'Название категории',
+        max_length=128
+    )
+    slug = models.CharField(
+        'slug',
+        help_text='Уникальное представление названия, только латинские буквы и занк " - " (тире).',
+        max_length=64,
+        unique=True
+    )
 
     def __str__(self):
         return self.name
@@ -56,6 +85,9 @@ class DishCategory(models.Model):
         verbose_name_plural = 'Категории блюд'
 
     def to_dict(self):
+        """
+        Метод для удобства возврата экземпляра модели и последующей конвертации в json.
+        """
         return {
             'id': self.id,
             'slug': self.slug,
@@ -64,7 +96,12 @@ class DishCategory(models.Model):
 
 
 class HoliDay(models.Model):
-    day = models.DateField(verbose_name='дата выходного дня')
+    """
+    Модель для добавления выходных дней в расписании.
+    """
+    day = models.DateField(
+        verbose_name='дата выходного дня'
+    )
 
     def __str__(self):
         return str(self.day)
@@ -75,19 +112,31 @@ class HoliDay(models.Model):
 
 
 class Shedule(models.Model):
-    holidays = models.ManyToManyField(HoliDay, verbose_name='Выходные', blank=True)
+    """
+    Модель расписания работы заведения.
+    Также содержит поля времени открытия и закрытия заведения для каждого дня недели
+        в формате (день)_open и (день)_close.
+    """
+    holidays = models.ManyToManyField(
+        HoliDay,
+        verbose_name='Выходные дни',
+        blank=True
+    )
 
     def __str__(self):
         return f'Расписание {self.pk} {self.get_open_time()}'
 
     def get_open_time(self):
+        """
+        Метод, возвращающий время открытия и закрытия для текущего дня.
+        Предварительно проверяет, выходной сегодня день или нет.
+        """
         for holiday in self.holidays.all():
             if datetime.today().date() == holiday.day:
-                return 0
+                return 0, 0
         weekday = datetime.today().weekday()
         open = getattr(self, f'{DAY_NAMES[weekday][0]}_open')
         close = getattr(self, f'{DAY_NAMES[weekday][0]}_close')
-        print(open, close)
         return open, close
 
     class Meta:
@@ -95,7 +144,7 @@ class Shedule(models.Model):
         verbose_name_plural = 'Расписания работы'
 
 
-# добавим поля времени открытия и закрытия по дням недели
+# Дни недели с краткими ключами и полнымим наименованиями.
 DAY_NAMES = (
     ('mon', 'Понедельник'),
     ('tue', 'Вторник'),
@@ -105,16 +154,37 @@ DAY_NAMES = (
     ('sat', 'Суббота'),
     ('sun', 'Воскресенье')
 )
+
+# добавим поля времени открытия и закрытия по дням недели в модель Shedule
 for day, day_name in DAY_NAMES:
     Shedule.add_to_class(f'{day}_open', models.TimeField(verbose_name=f'{day_name} - открытие', default=time(0, 0)))
     Shedule.add_to_class(f'{day}_close', models.TimeField(verbose_name=f'{day_name} - закрытие', default=time(0, 0)))
 
 
 class DiningRoom(models.Model):
-    name = models.CharField('Название столовой', max_length=128)
-    slug = models.CharField('slug', max_length=64, unique=True)
-    schedule = models.ForeignKey('Shedule', verbose_name='Расписание', on_delete=models.CASCADE)
-    description = models.CharField('Описание столовой', max_length=512, default='')
+    """
+    Модель описания заведения.
+    """
+    name = models.CharField(
+        'Название заведения',
+        max_length=128
+    )
+    slug = models.CharField(
+        'slug',
+        help_text='Уникальное представление названия, только латинские буквы и занк " - " (тире).',
+        max_length=64,
+        unique=True
+    )
+    schedule = models.ForeignKey(
+        'Shedule',
+        verbose_name='Расписание',
+        on_delete=models.CASCADE
+    )
+    description = models.CharField(
+        'Описание столовой',
+        max_length=512,
+        default=''
+    )
     photo = models.ImageField(
         'Фото заведения',
         upload_to='dining-room',
@@ -125,12 +195,35 @@ class DiningRoom(models.Model):
     def __str__(self):
         return self.name
 
+    def to_dict(self):
+        open_time, close_time = self.schedule.get_open_time()
+        return {
+            "name": str(self.name),
+            "description": self.description,
+            "openTime": open_time,
+            "closeTime": close_time,
+            "photo": str(self.photo) and self.photo.url,
+            "schedule": [
+                {
+                    'slug': day,
+                    'name': day_name,
+                    'open': getattr(self.schedule, f'{day}_open'),
+                    'close': getattr(self.schedule, f'{day}_close')
+                }
+                for day, day_name in DAY_NAMES
+            ],
+        }
+
     class Meta:
         verbose_name = 'Столовая'
         verbose_name_plural = 'Столовые'
 
 
 class WeekDay(models.Model):
+    """
+    Модель дня недели.
+    Добавлена для возможности удобного множественного выбора прикрепления меню к дням недели.
+    """
     day = models.CharField(
         choices=DAY_NAMES,
         max_length=3,
@@ -148,20 +241,25 @@ class WeekDay(models.Model):
 
 class DiningRoomMenu(models.Model):
     """
-    Mодель меню для заведения
+    Mодель меню для заведения.
+    Привязана к заведению и дням недели.
     """
     dining_room = models.ForeignKey(
         DiningRoom,
         verbose_name='Заведение',
+        help_text='Для какого заведения действует данное меню.',
         on_delete=models.CASCADE,
         null=True,
     )
     weekday = models.ManyToManyField(
-        WeekDay
+        WeekDay,
+        verbose_name='Дни',
+        help_text='Дни недели, когда действует данное меню.'
     )
     dishes = models.ManyToManyField(
         MenuItem,
         verbose_name='Блюда',
+        help_text='Блюда в меню.'
     )
 
     def __str__(self):
@@ -173,6 +271,10 @@ class DiningRoomMenu(models.Model):
         verbose_name_plural = 'Меню'
 
     def get_menu(self):
+        """
+        Метод, возвращающий меню.
+        Блюда раскладываются по категориям.
+        """
         grouped_dishes = itertools.groupby(
             self.dishes.all().order_by('category__slug'),
             key=lambda dish: dish.category and dish.category.slug
@@ -183,3 +285,4 @@ class DiningRoomMenu(models.Model):
             for dish in group:
                 dishes.append(dish.to_dict())
             menu.append({**dish.category.to_dict(), **{'dishes': dishes}})
+        return menu
