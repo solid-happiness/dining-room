@@ -83,7 +83,7 @@ const DishesContainer = styled.div`
     }
 
     @media screen and (max-width: 480px) {
-        width: 450px;
+        width: 95%;
     }
 `;
 
