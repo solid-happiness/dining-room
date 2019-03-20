@@ -3,9 +3,6 @@ from datetime import time, datetime
 import itertools
 
 
-# Create your models here.
-
-
 class MenuItem(models.Model):
     """
     Модель пункта меню.
@@ -49,7 +46,7 @@ class MenuItem(models.Model):
 
     def to_dict(self):
         """
-        Метод для удобства возврата экземпляра модели и последуюещй конвертации в json.
+        Метод для удобства возврата экземпляра модели и последующей конвертации в json.
         """
         return {
             "id": self.id,
@@ -60,7 +57,8 @@ class MenuItem(models.Model):
             "proteins": self.dish.proteins * self.net_weight / 100,
             "fats": self.dish.fats * self.net_weight / 100,
             "carbohydrates": self.dish.carbohydrates * self.net_weight / 100,
-            "calorific": self.dish.calorific / 1000
+            "calorific": self.dish.calorific / 1000,
+            "photo": str(self.photo) and self.photo.url,
         }
 
 
@@ -88,7 +86,7 @@ class DishCategory(models.Model):
 
     def to_dict(self):
         """
-        Метод для удобства возврата экземпляра модели и последуюещй конвертации в json.
+        Метод для удобства возврата экземпляра модели и последующей конвертации в json.
         """
         return {
             'id': self.id,
@@ -135,11 +133,10 @@ class Shedule(models.Model):
         """
         for holiday in self.holidays.all():
             if datetime.today().date() == holiday.day:
-                return 0
+                return 0, 0
         weekday = datetime.today().weekday()
         open = getattr(self, f'{DAY_NAMES[weekday][0]}_open')
         close = getattr(self, f'{DAY_NAMES[weekday][0]}_close')
-        print(open, close)
         return open, close
 
     class Meta:
@@ -197,6 +194,25 @@ class DiningRoom(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        open_time, close_time = self.schedule.get_open_time()
+        return {
+            "name": str(self.name),
+            "description": self.description,
+            "openTime": open_time,
+            "closeTime": close_time,
+            "photo": str(self.photo) and self.photo.url,
+            "schedule": [
+                {
+                    'slug': day,
+                    'name': day_name,
+                    'open': getattr(self.schedule, f'{day}_open'),
+                    'close': getattr(self.schedule, f'{day}_close')
+                }
+                for day, day_name in DAY_NAMES
+            ],
+        }
 
     class Meta:
         verbose_name = 'Столовая'
