@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { generate } from 'shortid';
 import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +10,7 @@ import Loader from '../Loader';
 import getRoom from './getRoom';
 import RoomDescription from './RoomDescription';
 import MenuGroup from './MenuGroup';
+import Basket from './Basket';
 
 const Container = styled.div`
     position: relative;
@@ -31,7 +33,6 @@ const BackIcon = styled(FontAwesomeIcon)`
         margin-right: 10px;
     }
 `;
-
 
 const ROOM_ACTIONS = {
     SET_LOADING: 0,
@@ -56,7 +57,7 @@ const rooms = (state, action) => {
     }
 }
 
-const loadRoom = async (slug, dispatch) => {
+const loadRoom = async ({ slug, dispatch, setDishes }) => {
     dispatch({
         type: ROOM_ACTIONS.SET_LOADING,
         loading: true,
@@ -73,6 +74,29 @@ const loadRoom = async (slug, dispatch) => {
         type: ROOM_ACTIONS.SET_LOADING,
         loading: false
     });
+
+    const selectedDishesIds = JSON.parse(
+        window.localStorage.getItem(`room-${room.id}`)
+    ) || [];
+
+    const dishes = room.menuGroups.reduce(
+        (acc, group) => [...acc, ...group.dishes],
+        []
+    )
+
+    const selectedDishes = selectedDishesIds
+        .map(dishId => dishes.find((dish) => dish.id === dishId))
+        .filter(Boolean)
+        .map((dish) => ({ ...dish, key: generate() }))
+
+    setDishes(selectedDishes);
+}
+
+const saveSelectedDishesToLocalStorage = ({ room, selectedDishes }) => {
+    window.localStorage.setItem(
+        `room-${room.id}`,
+        JSON.stringify(selectedDishes.map(dish => dish.id)),
+    );
 }
 
 const DiningRoom = ({ match }) => {
@@ -84,11 +108,25 @@ const DiningRoom = ({ match }) => {
         }
     );
 
+    const [selectedDishes, setDishes] = React.useState([]);
+    const addDishToCart = (dish) => {
+        setDishes([...selectedDishes, {...dish, key: generate()}]);
+    }
+
+    const [showCart, setShowCart] = React.useState(false);
+
     const { diningRoomSlug } = match.params;
 
     React.useEffect(() => {
-        loadRoom(diningRoomSlug, dispatch);
-    }, [])
+        loadRoom({ diningRoomSlug, dispatch, setDishes });
+    }, []);
+
+    React.useEffect(() => {
+        window.addEventListener(
+            'beforeunload',
+            () => saveSelectedDishesToLocalStorage({ room, selectedDishes }),
+        );
+    })
 
     return (
         <Layout>
@@ -102,12 +140,22 @@ const DiningRoom = ({ match }) => {
                     <RoomDescription {...room} />
                     {room.menuGroups.map((menuGroup) => (
                         <MenuGroup
-                            key={menuGroup.id} 
-                            menuGroup={menuGroup} 
+                            key={menuGroup.id}
+                            menuGroup={menuGroup}
+                            addToCart={addDishToCart}
                         />
                     ))}
                 </Container>
             </MainSection>
+            <Basket
+                selectedDishes={selectedDishes}
+                setShowCart={setShowCart}
+                onDelete={removingDish => setDishes(
+                    selectedDishes.filter(dish => dish.key !== removingDish.key),
+                )}
+                showCart={showCart}
+                diningRoomName={room.name}
+            />
         </Layout>
     )
 }
