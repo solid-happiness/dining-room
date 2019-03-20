@@ -17,7 +17,7 @@ const Content = styled(Typography)`
 
 const RoomDescription = ({
   name,
-  img,
+  photo,
   description,
   classes,
   openTime,
@@ -35,9 +35,9 @@ const RoomDescription = ({
       }}
       subheader={`Время работы: ${openTime} - ${closeTime}`}
     />
-    {img && (
+    {photo && (
     <CardMedia
-      image={img}
+      image={photo}
       title={description}
       className={classes.media}
     />
@@ -51,7 +51,7 @@ const RoomDescription = ({
 RoomDescription.defaultProps = {
   name: '',
   description: '',
-  img: '',
+  photo: '',
   openTime: '',
   closeTime: '',
 };
@@ -59,7 +59,7 @@ RoomDescription.defaultProps = {
 RoomDescription.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
-  img: PropTypes.string,
+  photo: PropTypes.string,
   openTime: PropTypes.string,
   closeTime: PropTypes.string,
   classes: PropTypes.object.isRequired,

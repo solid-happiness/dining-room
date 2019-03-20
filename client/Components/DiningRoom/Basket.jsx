@@ -17,17 +17,18 @@ import IconButton from '@material-ui/core/IconButton';
 import getDishDescription from './dishDescription';
 
 const SummariesCard = styled(Card)`
-    && {
-        display: flex;
-        align-items: center;
-        margin: 20px 15px;
-        padding: 15px;
+  && {
+    display: flex;
+    align-items: center;
+    margin: 20px 15px;
+    padding: 15px;
+    justify-content: center;
 
-        @media screen and (max-width: 720px) {
-            flex-direction: column;
-            align-items: center;
-        }
+    @media screen and (max-width: 720px) {
+        flex-direction: column;
+        align-items: stretch;
     }
+  }
 `;
 
 const SummariesTitle = styled(Typography)`
@@ -55,6 +56,11 @@ const AddToCartButton = styled(Fab)`
 const СheckoutButton = styled(Button)`
   && {
     max-height: 48px;
+    max-width: 175px;
+
+    @media screen and (max-width: 720px) {
+      align-self: center;
+    }
   }
 `;
 
@@ -169,11 +175,11 @@ const Basket = ({
     },
   );
 
-  summaries.price = summaries.price.toFixed(2);
-  summaries.proteins = summaries.proteins.toFixed(2);
-  summaries.fats = summaries.fats.toFixed(2);
-  summaries.carbohydrates = summaries.carbohydrates.toFixed(2);
-  summaries.calorific = summaries.calorific.toFixed(2);
+  summaries.price = summaries.price.toFixed(1);
+  summaries.proteins = summaries.proteins.toFixed(1);
+  summaries.fats = summaries.fats.toFixed(1);
+  summaries.carbohydrates = summaries.carbohydrates.toFixed(1);
+  summaries.calorific = summaries.calorific.toFixed(1);
 
   return (
     <>
@@ -200,7 +206,7 @@ const Basket = ({
               onDelete([]);
             }}
           >
-                        OK
+            OK
           </Button>
         </DialogActions>
       </Dialog>
@@ -211,7 +217,7 @@ const Basket = ({
         <DishesContainer>
           {selectedDishes.length === 0 && (
             <EmptyBasketMessage>
-                            Корзина пуста. Пожалуйства, выберите товары.
+              Корзина пуста. Пожалуйства, выберите товары.
             </EmptyBasketMessage>
           )}
           {selectedDishes.length !== 0 && (
@@ -219,15 +225,15 @@ const Basket = ({
               <CardContent>
                 <div>
                   <SummariesTitle variant="body1" align="left" inline>
-                                        Итоговая стоимость:
+                    Итоговая стоимость:
                   </SummariesTitle>
                   <Typography variant="body2" inline>
                     {` ${summaries.price} руб.`}
                   </Typography>
                 </div>
                 <div>
-                  <SummariesTitle variant="body1" align="left">
-                                        Общее К/Б/Ж/У:
+                  <SummariesTitle variant="body1" align="left" inline>
+                      Общее К/Б/Ж/У:
                   </SummariesTitle>
                   <Typography variant="body2" inline>
                     {` ${summaries.calorific}/${summaries.proteins}/${summaries.fats}/${summaries.carbohydrates}`}

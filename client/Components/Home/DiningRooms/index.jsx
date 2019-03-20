@@ -26,7 +26,7 @@ const Item = styled.div`
   background-image: ${({ icon }) => `url("${icon}")`};
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 150px;
+  background-size: contain;
   margin-bottom: 50px;
   display: flex;
   flex-direction: column;

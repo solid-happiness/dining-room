@@ -53,11 +53,6 @@ create database solid_happines_db owner solid_happines;
 ```
 
 #### 5. Заполнить базу данных
-Выполнить миграции:
-```
-$ python server/manage.py migrate
-```
-И заполнить БД:
 ```
 $ sudo -u postgres psql solid-happines_db < fixtures/dump.psql
 $ cp -r fixtures/pictures media

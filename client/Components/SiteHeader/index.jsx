@@ -49,10 +49,16 @@ const Menu = styled.aside`
 
 const AlertMessage = styled(DialogContentText)`
     && {
-        width: 350px;
-        margin: 15px 25px 10px 25px;
+      width: 350px;
+      margin: 15px 25px 10px 25px;
+      
+      @media screen and (max-width: 480px) {
+        width: 95%;
+      }
     }
 `;
+
+const handleClick = setAlertMessage => setAlertMessage('Данный функционал пока что не доступен, но будет реализован в ближайшее время');
 
 const SiteHeader = ({ theme }) => {
   const [alertMessage, setAlertMessage] = React.useState('');
@@ -75,21 +81,19 @@ const SiteHeader = ({ theme }) => {
         </Logo>
       </HomePageLink>
       <Menu>
-        <Button onClick={() => setAlertMessage('Данный функционал пока что не доступен, но будет реализован в ближайшее время')}>
+        <Button onClick={() => handleClick(setAlertMessage)}>
           Доставка
         </Button>
-        <Button>
+        <Button onClick={() => handleClick(setAlertMessage)}>
           Калькулятор калорий
         </Button>
       </Menu>
       <Dialog open={showAlert}>
         <AlertMessage>
-          <Typography>
-            {alertMessage}
-          </Typography>
+          {alertMessage}
         </AlertMessage>
         <DialogActions>
-          <Button>OK</Button>
+          <Button onClick={() => setAlertMessage('')}>OK</Button>
         </DialogActions>
       </Dialog>
     </Container>

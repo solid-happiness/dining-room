@@ -6,8 +6,8 @@ const getDishDescription = ({
   price,
   portion,
 }) => [
-  `Цена: ${price / 100}р`,
-  `К/Б/Ж/У: ${calorific / 1000}/${proteins}/${fats}/${carbohydrates}`,
+  `Цена: ${price}р`,
+  `К/Б/Ж/У: ${calorific.toFixed(2)}/${proteins.toFixed(2)}/${fats.toFixed(2)}/${carbohydrates.toFixed(2)}`,
   `Порция: ${portion}`,
 ];
 
