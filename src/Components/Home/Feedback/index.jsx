@@ -41,25 +41,25 @@ const Review = styled(Typography)`
 `;
 
 const Feedback = () => (
-    <Container>
-        <Photo src={photo} alt="Фотография респондента" />
-        <ReviewContainer>
-            <Typography
-                variant="h5"
-                color="secondary"
-            >
+  <Container>
+    <Photo src={photo} alt="Фотография респондента" />
+    <ReviewContainer>
+      <Typography
+        variant="h5"
+        color="secondary"
+      >
                 Александров А.А.
-            </Typography>
-            <Review
-                variant="body1"
-                color="textSecondary"
-            >
+      </Typography>
+      <Review
+        variant="body1"
+        color="textSecondary"
+      >
                 Студенты должны хорошо учиться,
                 а чтобы хорошо учиться, нужно хорошо пообедать.
                 Еда - очень важно.
-            </Review>
-        </ReviewContainer>
-    </Container>
-)
+      </Review>
+    </ReviewContainer>
+  </Container>
+);
 
 export default Feedback;

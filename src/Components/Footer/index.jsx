@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import { faInstagram, faVk, faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -56,43 +57,47 @@ const ProfileItem = styled(ListItem)`
 `;
 
 const profiles = [
-    {
-        name: 'Alesin Alexander',
-        link: 'https://www.instagram.com/sasha_alesin/',
-        icon: faInstagram,
-    },
-    {
-        name: 'Tumanov Ivan',
-        link: 'https://vk.com/tia97',
-        icon: faVk,
-    },
-    {
-        name: 'Dmitry Chebakov',
-        link: 'https://github.com/dchebakov',
-        icon: faGithub,
-    }
-]
+  {
+    name: 'Alesin Alexander',
+    link: 'https://www.instagram.com/sasha_alesin/',
+    icon: faInstagram,
+  },
+  {
+    name: 'Tumanov Ivan',
+    link: 'https://vk.com/tia97',
+    icon: faVk,
+  },
+  {
+    name: 'Dmitry Chebakov',
+    link: 'https://github.com/dchebakov',
+    icon: faGithub,
+  },
+];
 
 const Footer = ({ theme }) => (
-    <Container
-        theme={theme}
-    >
-        <Logo>ПОХАВАЙ!</Logo>
-        <List>
-            {profiles.map(({ name, icon, link }) => (
-                <ProfileItem key={name}>
-                    <ListItemIcon>
-                        <IconWrapper icon={icon} />
-                    </ListItemIcon>
-                    <ListItemText>
-                        <ProfileLink href={link}>
-                            {name}
-                        </ProfileLink>
-                    </ListItemText>
-                </ProfileItem>
-            ))}
-        </List>
-    </Container>
-)
+  <Container
+    theme={theme}
+  >
+    <Logo>ПОХАВАЙ!</Logo>
+    <List>
+      {profiles.map(({ name, icon, link }) => (
+        <ProfileItem key={name}>
+          <ListItemIcon>
+            <IconWrapper icon={icon} />
+          </ListItemIcon>
+          <ListItemText>
+            <ProfileLink href={link}>
+              {name}
+            </ProfileLink>
+          </ListItemText>
+        </ProfileItem>
+      ))}
+    </List>
+  </Container>
+);
+
+Footer.propTypes = {
+  theme: PropTypes.object.isRequired,
+};
 
 export default withTheme()(Footer);

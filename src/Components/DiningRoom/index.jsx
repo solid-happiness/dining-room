@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { generate } from 'shortid';
@@ -38,133 +39,137 @@ const BackIcon = styled(FontAwesomeIcon)`
 `;
 
 const ROOM_ACTIONS = {
-    SET_LOADING: 0,
-    SET_ROOM: 1,
-}
+  SET_LOADING: 0,
+  SET_ROOM: 1,
+};
 
 const rooms = (state, action) => {
-    switch (action.type) {
+  switch (action.type) {
     case ROOM_ACTIONS.SET_LOADING:
-        return {
-            ...state,
-            loading: action.loading,
-        }
+      return {
+        ...state,
+        loading: action.loading,
+      };
     case ROOM_ACTIONS.SET_ROOM:
-        return {
-            ...state,
-            ...action.payload,
-        }
+      return {
+        ...state,
+        ...action.payload,
+      };
 
     default:
-        return state;
-    }
-}
+      return state;
+  }
+};
 
 const loadRoom = async ({ slug, dispatch, setDishes }) => {
-    dispatch({
-        type: ROOM_ACTIONS.SET_LOADING,
-        loading: true,
-    });
+  dispatch({
+    type: ROOM_ACTIONS.SET_LOADING,
+    loading: true,
+  });
 
-    const room = await getRoom(slug);
+  const room = await getRoom(slug);
 
-    dispatch({ 
-        type: ROOM_ACTIONS.SET_ROOM, 
-        payload: room
-    });
+  dispatch({
+    type: ROOM_ACTIONS.SET_ROOM,
+    payload: room,
+  });
 
-    dispatch({ 
-        type: ROOM_ACTIONS.SET_LOADING,
-        loading: false
-    });
+  dispatch({
+    type: ROOM_ACTIONS.SET_LOADING,
+    loading: false,
+  });
 
-    const selectedDishesIds = JSON.parse(
-        window.localStorage.getItem(`room-${room.id}`)
-    ) || [];
+  const selectedDishesIds = JSON.parse(
+    window.localStorage.getItem(`room-${room.id}`),
+  ) || [];
 
-    const dishes = room.menuGroups.reduce(
-        (acc, group) => [...acc, ...group.dishes],
-        []
-    )
+  const dishes = room.menuGroups.reduce(
+    (acc, group) => [...acc, ...group.dishes],
+    [],
+  );
 
-    const selectedDishes = selectedDishesIds
-        .map(dishId => dishes.find((dish) => dish.id === dishId))
-        .filter(Boolean)
-        .map((dish) => ({ ...dish, key: generate() }))
+  const selectedDishes = selectedDishesIds
+    .map(dishId => dishes.find(dish => dish.id === dishId))
+    .filter(Boolean)
+    .map(dish => ({ ...dish, key: generate() }));
 
-    setDishes(selectedDishes);
-}
+  setDishes(selectedDishes);
+};
 
 const saveSelectedDishesToLocalStorage = ({ room, selectedDishes }) => {
-    window.localStorage.setItem(
-        `room-${room.id}`,
-        JSON.stringify(selectedDishes.map(dish => dish.id)),
-    );
-}
+  window.localStorage.setItem(
+    `room-${room.id}`,
+    JSON.stringify(selectedDishes.map(dish => dish.id)),
+  );
+};
 
 const DiningRoom = ({ match }) => {
-    const [room, dispatch] = React.useReducer(
-        rooms,
-        {
-            loading: true,
-            menuGroups: [],
-        }
+  const [room, dispatch] = React.useReducer(
+    rooms,
+    {
+      loading: true,
+      menuGroups: [],
+    },
+  );
+
+  const [selectedDishes, setDishes] = React.useState([]);
+  const addDishToCart = (dish) => {
+    setDishes([...selectedDishes, { ...dish, key: generate() }]);
+  };
+
+  const [showCart, setShowCart] = React.useState(false);
+
+  const { diningRoomSlug } = match.params;
+
+  React.useEffect(() => {
+    loadRoom({ diningRoomSlug, dispatch, setDishes });
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener(
+      'beforeunload',
+      () => saveSelectedDishesToLocalStorage({ room, selectedDishes }),
     );
+  });
 
-    const [selectedDishes, setDishes] = React.useState([]);
-    const addDishToCart = (dish) => {
-        setDishes([...selectedDishes, {...dish, key: generate()}]);
-    }
+  React.useEffect(() => {
+    document.title = room.name;
+  }, [room]);
 
-    const [showCart, setShowCart] = React.useState(false);
-
-    const { diningRoomSlug } = match.params;
-
-    React.useEffect(() => {
-        loadRoom({ diningRoomSlug, dispatch, setDishes });
-    }, []);
-
-    React.useEffect(() => {
-        window.addEventListener(
-            'beforeunload',
-            () => saveSelectedDishesToLocalStorage({ room, selectedDishes }),
-        );
-    })
-
-    React.useEffect(() => {
-        document.title = room.name;
-    }, [room])
-
-    return (
-        <Layout>
-            <MainSection>
-                <Container>
-                    <Loader fullscreen loading={room.loading} />
-                    <BackLink to="/">
-                        <Button>
-                            <BackIcon icon={faHandPointLeft} />
+  return (
+    <Layout>
+      <MainSection>
+        <Container>
+          <Loader fullscreen loading={room.loading} />
+          <BackLink to="/">
+            <Button>
+              <BackIcon icon={faHandPointLeft} />
                             К списку столовых
-                        </Button>
-                    </BackLink>
-                    <RoomDescription {...room} />
-                    {room.menuGroups.map((menuGroup) => (
-                        <MenuGroup
-                            key={menuGroup.id}
-                            menuGroup={menuGroup}
-                            addToCart={addDishToCart}
-                        />
-                    ))}
-                </Container>
-            </MainSection>
-            <Basket
-                selectedDishes={selectedDishes}
-                setShowCart={setShowCart}
-                onDelete={dishes => setDishes(dishes)}
-                showCart={showCart}
-                diningRoomName={room.name}
+            </Button>
+          </BackLink>
+          <RoomDescription {...room} />
+          {room.menuGroups.map(menuGroup => (
+            <MenuGroup
+              key={menuGroup.id}
+              menuGroup={menuGroup}
+              addToCart={addDishToCart}
             />
-        </Layout>
-    )
-}
+          ))}
+        </Container>
+      </MainSection>
+      <Basket
+        selectedDishes={selectedDishes}
+        setShowCart={setShowCart}
+        onDelete={dishes => setDishes(dishes)}
+        showCart={showCart}
+        diningRoomName={room.name}
+      />
+    </Layout>
+  );
+};
+
+DiningRoom.propTypes = {
+  match: PropTypes.object.isRequired,
+};
 
 export default DiningRoom;

@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHamburger } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
 import { withTheme } from '@material-ui/core';
@@ -54,45 +55,49 @@ const AlertMessage = styled(DialogContentText)`
 `;
 
 const SiteHeader = ({ theme }) => {
-    const [alertMessage, setAlertMessage] = React.useState('');
-    const showAlert = alertMessage !== '';
+  const [alertMessage, setAlertMessage] = React.useState('');
+  const showAlert = alertMessage !== '';
 
-    return (
-        <Container>
-            <HomePageLink to="/">
-                <Logo>
-                    <LogoIcon
-                        icon={faHamburger}
-                        color={theme.palette.primary.main}
-                    />
-                    <Typography
-                        variant="h6"
-                        inline
-                    >
-                        МГТУ им. Н.Э. Баумана
-                    </Typography>
-                </Logo>
-            </HomePageLink>
-            <Menu>
-                <Button onClick={() => setAlertMessage('Данный функционал пока что не доступен, но будет реализован в ближайшее время')}>
-                    Доставка
-                </Button>
-                <Button>
-                    Калькулятор калорий
-                </Button>
-            </Menu>
-            <Dialog open={showAlert}>
-                <AlertMessage>
-                    <Typography>
-                        {alertMessage}
-                    </Typography>
-                    </AlertMessage>
-                <DialogActions>
-                    <Button>OK</Button>
-                </DialogActions>
-            </Dialog>
-        </Container>
-    )
-}
+  return (
+    <Container>
+      <HomePageLink to="/">
+        <Logo>
+          <LogoIcon
+            icon={faHamburger}
+            color={theme.palette.primary.main}
+          />
+          <Typography
+            variant="h6"
+            inline
+          >
+            МГТУ им. Н.Э. Баумана
+          </Typography>
+        </Logo>
+      </HomePageLink>
+      <Menu>
+        <Button onClick={() => setAlertMessage('Данный функционал пока что не доступен, но будет реализован в ближайшее время')}>
+          Доставка
+        </Button>
+        <Button>
+          Калькулятор калорий
+        </Button>
+      </Menu>
+      <Dialog open={showAlert}>
+        <AlertMessage>
+          <Typography>
+            {alertMessage}
+          </Typography>
+        </AlertMessage>
+        <DialogActions>
+          <Button>OK</Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
+  );
+};
+
+SiteHeader.propTypes = {
+  theme: PropTypes.object.isRequired,
+};
 
 export default withTheme()(SiteHeader);

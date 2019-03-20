@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 
 const Container = styled.div`
-    position: ${({ fullscreen }) => fullscreen ? 'fixed' : 'absolute'};
+    position: ${({ fullscreen }) => (fullscreen ? 'fixed' : 'absolute')};
     top: 0;
     left: 0;
     width: 100%;
@@ -61,42 +61,42 @@ const Domino = styled.div`
 `;
 
 const getColors = () => {
-    const interpolator = d3.interpolate('#283583', '#EB5B49');
-    return _.orderBy(
-        [...new Array(4)].map(() => Math.random()),
-        null,
-        Math.random() < 0.5 ? 'asc' : 'desc',
-    ).map(v => interpolator(v));
-}
+  const interpolator = d3.interpolate('#283583', '#EB5B49');
+  return _.orderBy(
+    [...new Array(4)].map(() => Math.random()),
+    null,
+    Math.random() < 0.5 ? 'asc' : 'desc',
+  ).map(v => interpolator(v));
+};
 
 const Loader = ({ fullscreen, loading }) => {
-    if (!loading) {
-        return null;
-    }
+  if (!loading) {
+    return null;
+  }
 
-    const dominoes = getColors().map((color, idx) => ({
-        color,
-        id: generate(),
-        delay: 0.6 * idx,
-    }))
+  const dominoes = getColors().map((color, idx) => ({
+    color,
+    id: generate(),
+    delay: 0.6 * idx,
+  }));
 
-    return (
-        <Container fullscreen={fullscreen}>
-            {dominoes.map((domino) => (
-                <Domino key={domino.id} {...domino} />
-            ))}
-        </Container>
-    )
-}
+  return (
+    <Container fullscreen={fullscreen}>
+      {dominoes.map(domino => (
+        <Domino key={domino.id} {...domino} />
+      ))}
+    </Container>
+  );
+};
 
 Loader.defaultProps = {
-    loading: true,
-    fullscreen: false,
-}
+  loading: true,
+  fullscreen: false,
+};
 
 Loader.propTypes = {
-    loading: PropTypes.bool,
-    fullscreen: PropTypes.bool,
-}
+  loading: PropTypes.bool,
+  fullscreen: PropTypes.bool,
+};
 
 export default Loader;
