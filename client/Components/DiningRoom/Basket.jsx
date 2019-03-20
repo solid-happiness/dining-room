@@ -143,11 +143,15 @@ const DeleteIcon = styled(FontAwesomeIcon)`
 `;
 
 const CheckoutDialogText = styled(DialogContentText)`
-    && {
-        width: 300px;
-        margin: 15px 10px;
-        text-align: center;
+  && {
+    width: 300px;
+    margin: 15px 10px;
+    text-align: center;
+
+    @media screen and (max-width: 480px) {
+      width: 70vw;
     }
+  }
 `;
 
 const Basket = ({
@@ -195,7 +199,7 @@ const Basket = ({
         open={showCheckoutAlert}
       >
         <CheckoutDialogText>
-          {`Ваш заказ успешно оформлен и ожидает в столовой ${diningRoomName}`}
+          {`Ваш заказ успешно оформлен и ожидает в столовой «‎${diningRoomName}»‎`}
         </CheckoutDialogText>
         <DialogActions>
           <Button
