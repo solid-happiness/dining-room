@@ -1,5 +1,6 @@
 from django.contrib import admin
 from eatery.models import DiningRoom, HoliDay, DishCategory, Shedule, MenuItem, DiningRoomMenu
+from django.db.models import Q
 
 
 class SheduleAdmin(admin.ModelAdmin):
@@ -23,10 +24,28 @@ class MenuItemAdmin(admin.ModelAdmin):
 
 class DiningRoomMenuAdmin(admin.ModelAdmin):
     list_filter = ('dining_room', 'weekday')
+    autocomplete_fields = ('dishes',)
 
+
+class DiningRoomAdmin(admin.ModelAdmin):
+    """
+    Отфильтруем модели расписания на странице заведения,
+        оставив непривязанные модели расписаний и привязанную к данному заведению.
+    """
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(DiningRoomAdmin, self).get_form(request, obj, **kwargs)
+
+        # Фильтр: нет привязки к DiningRoom или привязка к текущему объекту
+        qs = Q(diningroom__isnull=True) | Q(diningroom=obj)
+
+        # Фильтруем поле schedule
+        form.base_fields['schedule'].queryset = \
+            Shedule.objects.filter(qs)
+        return form
 
 # Register your models here.
-admin.site.register(DiningRoom)
+
+admin.site.register(DiningRoom, DiningRoomAdmin)
 admin.site.register(HoliDay)
 admin.site.register(DishCategory)
 admin.site.register(Shedule, SheduleAdmin)

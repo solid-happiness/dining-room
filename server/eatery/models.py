@@ -28,13 +28,15 @@ class MenuItem(models.Model):
     )
     portion = models.CharField(
         'Граммовка',
-        help_text='Строковое представление для отображения на странице. Например: 250/25.',
+        help_text='Строковое представление для отображения на странице. '
+                  'Например: 250/25, если блюдо составное. В граммах.',
         max_length=64,
         default='0',
     )
     net_weight = models.FloatField(
         'Масса нетто',
-        help_text='Полная масса готового блюда. Если оно составное, то суммарный вес всех входящих продуктов.',
+        help_text='Полная масса готового блюда в граммах. '
+                  'Если оно составное, то суммарный вес всех входящих продуктов.',
         default=0
     )
     category = models.ForeignKey(
@@ -182,7 +184,8 @@ class DiningRoom(models.Model):
     schedule = models.OneToOneField(
         'Shedule',
         verbose_name='Расписание',
-        help_text='Расписание уникально для каждого заведения (необходимо создать новое).',
+        related_name='diningroom',
+        help_text='Расписание уникально для каждого заведения (необходимо создать новое или выбрать из представленных).',
         on_delete=models.CASCADE
     )
     description = models.CharField(
