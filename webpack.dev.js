@@ -38,7 +38,15 @@ module.exports = require('./webpack.base')({
     hints: false,
   },
   devServer: {
-    contentBase: path.join(__dirname, 'build'),
+    contentBase: [
+      path.join(__dirname, 'build'),
+      path.join(__dirname, 'media'),
+    ],
     port: 3000,
+    proxy: {
+      '/api': 'http://localhost:8000',
+      '/media': 'http://localhost:8000',
+    },
+    historyApiFallback: true,
   },
 });

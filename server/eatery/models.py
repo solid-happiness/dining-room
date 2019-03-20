@@ -8,7 +8,8 @@ class MenuItem(models.Model):
     Модель пункта меню.
     Содержит блюдо и его товарные характеристики.
     """
-    dish = models.ForeignKey('dish.Dish', verbose_name='Блюдо', on_delete=models.CASCADE)
+    dish = models.ForeignKey(
+        'dish.Dish', verbose_name='Блюдо', on_delete=models.CASCADE)
     price = models.IntegerField(
         'Цена',
         help_text='Цена выражается в копейках.',
@@ -157,8 +158,10 @@ DAY_NAMES = (
 
 # добавим поля времени открытия и закрытия по дням недели в модель Shedule
 for day, day_name in DAY_NAMES:
-    Shedule.add_to_class(f'{day}_open', models.TimeField(verbose_name=f'{day_name} - открытие', default=time(0, 0)))
-    Shedule.add_to_class(f'{day}_close', models.TimeField(verbose_name=f'{day_name} - закрытие', default=time(0, 0)))
+    Shedule.add_to_class(f'{day}_open', models.TimeField(
+        verbose_name=f'{day_name} - открытие', default=time(0, 0)))
+    Shedule.add_to_class(f'{day}_close', models.TimeField(
+        verbose_name=f'{day_name} - закрытие', default=time(0, 0)))
 
 
 class DiningRoom(models.Model):
@@ -198,6 +201,7 @@ class DiningRoom(models.Model):
     def to_dict(self):
         open_time, close_time = self.schedule.get_open_time()
         return {
+            "id": self.pk,
             "name": str(self.name),
             "description": self.description,
             "openTime": open_time,

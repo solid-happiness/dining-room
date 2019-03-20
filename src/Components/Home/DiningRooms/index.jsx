@@ -5,28 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { withTheme } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
-import coffeeIcon from './coffee-icon.svg';
-import dumplingIcon from './dumpling-icon.svg';
-import hotDishIcon from './hot-dish-icon.svg';
-
-const diningRooms = [
-  {
-    name: 'Кафетерий',
-    icon: coffeeIcon,
-    slug: 'coffee',
-  },
-  {
-    name: 'Пельменная',
-    icon: dumplingIcon,
-    slug: 'dumpling',
-  },
-  {
-    name: 'Столовая',
-    icon: hotDishIcon,
-    slug: 'hot-dish',
-  },
-];
-
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -65,18 +43,34 @@ const Title = styled.header`
   text-align: center;
 `;
 
+const loadDiningRooms = async (setDiningRooms) => {
+  const { eateries } = await (await fetch('/api/eateries/')).json();
+
+  setDiningRooms(eateries);
+};
+
 const DiningRooms = ({ theme, history }) => {
   React.useEffect(() => {
     document.title = 'Похавай!';
   }, []);
 
+  const [diningRooms, setDiningRooms] = React.useState([]);
+  React.useEffect(() => {
+    loadDiningRooms(setDiningRooms);
+  }, []);
+
   return (
     <Container>
-      {diningRooms.map(({ name, icon, slug }) => (
+      {diningRooms.map(({
+        id,
+        name,
+        photo,
+        slug,
+      }) => (
         <Item
-          icon={icon}
+          icon={photo}
           alt={name}
-          key={slug}
+          key={id}
           color={theme.palette.secondary.main}
         >
           <Title color={theme.palette.primary.main}>
