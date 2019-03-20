@@ -14,6 +14,16 @@ const Photo = styled.img`
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
+
+    @media screen and (max-width: 400px) {
+        width: 50px;
+        height: 50px;
+    }
+
+    @media screen and (min-width: 1200px) {
+        width: 200px;
+        height: 200px;
+    }
 `;
 
 const ReviewContainer = styled.div`

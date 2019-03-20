@@ -15,8 +15,9 @@ import Basket from './Basket';
 
 const Container = styled.div`
     position: relative;
+    max-width: 1200px;
     min-height: calc(100vh - 64px);
-    margin: 0 15px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;

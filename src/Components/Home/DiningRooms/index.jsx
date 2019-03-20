@@ -28,14 +28,17 @@ const diningRooms = [
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  margin: 50px 0;
+  margin: 50px auto;
+  max-width: 1200px;
+  
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+  }
 `;
 
 const Item = styled.div`
-  flex: 1;
   width: 300px;
   height: 300px;
   border: 1px #484848 dashed;

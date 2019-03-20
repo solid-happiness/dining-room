@@ -1,5 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHamburger } from '@fortawesome/free-solid-svg-icons';
@@ -42,43 +46,53 @@ const Menu = styled.aside`
     }
 `;
 
-const Delivery = styled(Typography)`
+const AlertMessage = styled(DialogContentText)`
     && {
-        margin-right: 15px;
+        width: 350px;
+        margin: 15px 25px 10px 25px;
     }
 `;
 
-const SiteHeader = ({ theme }) => (
-    <Container>
-        <HomePageLink to="/">
-            <Logo>
-                <LogoIcon
-                    icon={faHamburger}
-                    color={theme.palette.primary.main}
-                />
-                <Typography
-                    variant="h6"
-                    inline
-                >
-                    МГТУ им. Н.Э. Баумана
-                </Typography>
-            </Logo>
-        </HomePageLink>
-        <Menu>
-            <Delivery
-                variant="body1"
-                inline
-            >
-                Доставка
-            </Delivery>
-            <Typography
-                variant="body1"
-                inline
-            >
-                Калькулятор калорий
-            </Typography>
-        </Menu>
-    </Container>
-)
+const SiteHeader = ({ theme }) => {
+    const [alertMessage, setAlertMessage] = React.useState('');
+    const showAlert = alertMessage !== '';
+
+    return (
+        <Container>
+            <HomePageLink to="/">
+                <Logo>
+                    <LogoIcon
+                        icon={faHamburger}
+                        color={theme.palette.primary.main}
+                    />
+                    <Typography
+                        variant="h6"
+                        inline
+                    >
+                        МГТУ им. Н.Э. Баумана
+                    </Typography>
+                </Logo>
+            </HomePageLink>
+            <Menu>
+                <Button onClick={() => setAlertMessage('Данный функционал пока что не доступен, но будет реализован в ближайшее время')}>
+                    Доставка
+                </Button>
+                <Button>
+                    Калькулятор калорий
+                </Button>
+            </Menu>
+            <Dialog open={showAlert}>
+                <AlertMessage>
+                    <Typography>
+                        {alertMessage}
+                    </Typography>
+                    </AlertMessage>
+                <DialogActions>
+                    <Button>OK</Button>
+                </DialogActions>
+            </Dialog>
+        </Container>
+    )
+}
 
 export default withTheme()(SiteHeader);

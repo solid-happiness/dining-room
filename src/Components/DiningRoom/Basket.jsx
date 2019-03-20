@@ -21,6 +21,11 @@ const SummariesCard = styled(Card)`
         align-items: center;
         margin: 20px 15px;
         padding: 15px;
+
+        @media screen and (max-width: 720px) {
+            flex-direction: column;
+            align-items: center;
+        }
     }
 `;
 
@@ -71,6 +76,14 @@ const DishesContainer = styled.div`
     text-align: center;
     max-height: 90%;
     overflow-y: auto;
+
+    @media screen and (max-width: 320px) {
+        width: 100%;
+    }
+
+    @media screen and (max-width: 480px) {
+        width: 450px;
+    }
 `;
 
 const DishCard = styled(Card)`

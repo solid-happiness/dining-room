@@ -22,6 +22,14 @@ const Container = styled.div`
 const Logo = styled.header`
     font-size: 4rem;
     font-family: "Amatic SC";
+
+    @media screen and (max-width: 480px) {
+        font-size: 3rem;
+    }
+
+    @media screen and (min-width: 1200px) {
+        font-size: 5rem;
+    }
 `;
 
 const IconWrapper = styled(FontAwesomeIcon)`
@@ -77,7 +85,9 @@ const Footer = ({ theme }) => (
                         <IconWrapper icon={icon} />
                     </ListItemIcon>
                     <ListItemText>
-                        <ProfileLink href={link}>{name}</ProfileLink>
+                        <ProfileLink href={link}>
+                            {name}
+                        </ProfileLink>
                     </ListItemText>
                 </ProfileItem>
             ))}
