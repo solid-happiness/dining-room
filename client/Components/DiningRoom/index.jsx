@@ -9,7 +9,7 @@ import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../Layout';
 import MainSection from '../MainSection';
 import Loader from '../Loader';
-import sleep from './sleep';
+import sleep from '../../helpers/sleep';
 import RoomDescription from './RoomDescription';
 import MenuGroup from './MenuGroup';
 import Basket from './Basket';
@@ -69,7 +69,7 @@ const loadRoom = async ({ slug, dispatch, setDishes }) => {
   });
 
   const loadedRoom = await (await fetch(`/api/eateries/${slug}/`)).json();
-  await sleep(2000);
+  await sleep(1000);
 
   dispatch({
     type: ROOM_ACTIONS.SET_ROOM,

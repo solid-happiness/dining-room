@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import Loader from '../../Loader';
+import sleep from '../../../helpers/sleep';
 
 const Container = styled.div`
   display: flex;
@@ -45,6 +47,8 @@ const Title = styled.header`
 
 const loadDiningRooms = async (setDiningRooms) => {
   const { eateries } = await (await fetch('/api/eateries/')).json();
+  // Для красоты отображения loader-ов увеличиваем задержку на 1 секунду.
+  await sleep(1000);
 
   setDiningRooms(eateries);
 };
@@ -59,8 +63,11 @@ const DiningRooms = ({ theme, history }) => {
     loadDiningRooms(setDiningRooms);
   }, []);
 
+  const loading = diningRooms.length === 0;
+
   return (
     <Container>
+      <Loader loading={loading} fullscreen />
       {diningRooms.map(({
         id,
         name,
