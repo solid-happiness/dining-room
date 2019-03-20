@@ -1,5 +1,5 @@
 from django.contrib import admin
-from eatery.models import DiningRoom, HoliDay, DishCategory, Shedule, MenuItem, DiningRoomMenu, WeekDay
+from eatery.models import DiningRoom, HoliDay, DishCategory, Shedule, MenuItem, DiningRoomMenu
 
 
 class SheduleAdmin(admin.ModelAdmin):
@@ -18,4 +18,3 @@ admin.site.register(DishCategory)
 admin.site.register(Shedule, SheduleAdmin)
 admin.site.register(MenuItem)
 admin.site.register(DiningRoomMenu)
-admin.site.register(WeekDay)
