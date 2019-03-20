@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -20,17 +21,17 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: '#EB5B49',
-    }
+    },
   },
   typography: {
     useNextVariants: true,
-  }
-})
+  },
+});
 
 const App = () => {
   React.useEffect(() => {
     document.title = 'Похавай!';
-  }, [])
+  }, []);
 
   return (
     <>
@@ -43,7 +44,7 @@ const App = () => {
         </Router>
       </MuiThemeProvider>
     </>
-  )
-}
+  );
+};
 
 export default App;
