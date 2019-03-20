@@ -11,6 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import getDishDescription from './dishDescription';
 
 const MenuGroupContainer = styled(ExpansionPanel)`
     && {
@@ -39,28 +40,13 @@ const GridListTile = styled(GridListTileMaterialUI)`
     }
 `;
 
-const SubHeaderSection = styled.p`
+const DescriptionParagraph = styled.p`
     && {
         margin: 0;
     }
 `;
 
-const getSubheader = ({ 
-    calorific,
-    proteins,
-    fats,
-    carbohydrates,
-    price,
-    portion
-}) => (
-    <>
-    <SubHeaderSection>{`Цена: ${price}`}</SubHeaderSection>
-    <SubHeaderSection>{`К/Б/Ж/У: ${Number(calorific / 1000)}/${proteins}/${fats}/${carbohydrates}`}</SubHeaderSection>
-    <SubHeaderSection>{`Порция: ${portion}`}</SubHeaderSection>
-    </>
-);
-
-const MenuGroup = ({ menuGroup }) => (
+const MenuGroup = ({ menuGroup, addToCart }) => (
     <MenuGroupContainer>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} >
             <Summary variant="body1" color="primary">
@@ -74,9 +60,15 @@ const MenuGroup = ({ menuGroup }) => (
                         <img src={dish.img} alt={dish.name} />
                         <GridListTileBar
                             title={dish.name}
-                            subtitle={getSubheader(dish)}
+                            subtitle={getDishDescription(dish).map(str => (
+                                <DescriptionParagraph key={str}>
+                                    {str}
+                                </DescriptionParagraph>
+                            ))}
                             actionIcon={
-                                <IconButton>
+                                <IconButton
+                                    onClick={() => addToCart(dish)}
+                                >
                                     <FontAwesomeIcon
                                         icon={faShoppingBasket}
                                         color="white"

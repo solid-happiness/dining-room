@@ -52,12 +52,16 @@ RoomDescription.defaultProps = {
     name: '',
     description: '',
     img: '',
+    openTime: '',
+    closeTime: '',
 }
 
 RoomDescription.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     img: PropTypes.string,
+    openTime: PropTypes.string,
+    closeTime: PropTypes.string,
 };
 
 const styles = {
