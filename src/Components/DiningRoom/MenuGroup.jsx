@@ -58,7 +58,7 @@ const MenuGroup = ({ menuGroup, addToCart }) => (
       <GridList>
         {menuGroup.dishes.map(dish => (
           <GridListTile key={dish.id}>
-            <img src={dish.img} alt={dish.name} />
+            <img src={dish.photo} alt="" />
             <GridListTileBar
               title={dish.name}
               subtitle={getDishDescription(dish).map(str => (

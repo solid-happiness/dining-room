@@ -205,6 +205,7 @@ class DiningRoom(models.Model):
         return {
             "id": self.pk,
             "name": str(self.name),
+            "slug": self.slug,
             "description": self.description,
             "openTime": open_time,
             "closeTime": close_time,
@@ -212,7 +213,7 @@ class DiningRoom(models.Model):
             "schedule": [
                 {
                     'slug': day,
-                    'name': day_name,
+                    'name ': day_name,
                     'open': getattr(self.schedule, f'{day}_open'),
                     'close': getattr(self.schedule, f'{day}_close')
                 }

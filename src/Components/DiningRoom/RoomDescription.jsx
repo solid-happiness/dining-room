@@ -33,7 +33,7 @@ const RoomDescription = ({
         color: 'secondary',
         variant: 'h6',
       }}
-      subheader={`Время работы: ${openTime}:${closeTime}`}
+      subheader={`Время работы: ${openTime} - ${closeTime}`}
     />
     {img && (
     <CardMedia

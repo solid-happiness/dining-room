@@ -252,7 +252,7 @@ const Basket = ({
               >
                 <DeleteIcon icon={faPlus} color="white" />
               </DeleteButton>
-              <CardMedia image={dish.img} title={dish.name} />
+              <CardMedia image={dish.photo} title={dish.name} />
               <CardContent>
                 {getDishDescription(dish).map(str => (
                   <DescriptionParagraph key={str}>

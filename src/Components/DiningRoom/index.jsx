@@ -9,7 +9,7 @@ import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../Layout';
 import MainSection from '../MainSection';
 import Loader from '../Loader';
-import getRoom from './getRoom';
+import sleep from './sleep';
 import RoomDescription from './RoomDescription';
 import MenuGroup from './MenuGroup';
 import Basket from './Basket';
@@ -67,11 +67,12 @@ const loadRoom = async ({ slug, dispatch, setDishes }) => {
     loading: true,
   });
 
-  const room = await getRoom(slug);
+  const loadedRoom = await (await fetch(`/api/eateries/${slug}/`)).json();
+  await sleep(2000);
 
   dispatch({
     type: ROOM_ACTIONS.SET_ROOM,
-    payload: room,
+    payload: loadedRoom,
   });
 
   dispatch({
@@ -80,10 +81,10 @@ const loadRoom = async ({ slug, dispatch, setDishes }) => {
   });
 
   const selectedDishesIds = JSON.parse(
-    window.localStorage.getItem(`room-${room.id}`),
+    window.localStorage.getItem(`room-${loadedRoom.id}`),
   ) || [];
 
-  const dishes = room.menuGroups.reduce(
+  const dishes = loadedRoom.menu.reduce(
     (acc, group) => [...acc, ...group.dishes],
     [],
   );
@@ -108,7 +109,7 @@ const DiningRoom = ({ match }) => {
     rooms,
     {
       loading: true,
-      menuGroups: [],
+      menu: [],
     },
   );
 
@@ -122,7 +123,7 @@ const DiningRoom = ({ match }) => {
   const { diningRoomSlug } = match.params;
 
   React.useEffect(() => {
-    loadRoom({ diningRoomSlug, dispatch, setDishes });
+    loadRoom({ slug: diningRoomSlug, dispatch, setDishes });
   }, []);
 
   React.useEffect(() => {
@@ -133,7 +134,7 @@ const DiningRoom = ({ match }) => {
   });
 
   React.useEffect(() => {
-    document.title = room.name;
+    document.title = room.name || 'Страница столовой';
   }, [room]);
 
   return (
@@ -144,11 +145,11 @@ const DiningRoom = ({ match }) => {
           <BackLink to="/">
             <Button>
               <BackIcon icon={faHandPointLeft} />
-                            К списку столовых
+              К списку столовых
             </Button>
           </BackLink>
           <RoomDescription {...room} />
-          {room.menuGroups.map(menuGroup => (
+          {room.menu.map(menuGroup => (
             <MenuGroup
               key={menuGroup.id}
               menuGroup={menuGroup}
