@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import getDishDescription from './dishDescription';
+import defaultDishBackground from './hot-dish-icon.svg';
 
 const MenuGroupContainer = styled(ExpansionPanel)`
     && {
@@ -58,7 +59,7 @@ const MenuGroup = ({ menuGroup, addToCart }) => (
       <GridList>
         {menuGroup.dishes.map(dish => (
           <GridListTile key={dish.id}>
-            <img src={dish.photo} alt="" />
+            <img src={dish.photo || defaultDishBackground} alt="" />
             <GridListTileBar
               title={dish.name}
               subtitle={getDishDescription(dish).map(str => (

@@ -8,6 +8,12 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 
+const Container = styled(Card)`
+  && {
+    width: 100%;
+  }
+`;
+
 const Content = styled(Typography)`
     && {
         font-size: 1rem;
@@ -23,7 +29,7 @@ const RoomDescription = ({
   openTime,
   closeTime,
 }) => (
-  <Card>
+  <Container>
     <CardHeader
       title={name}
       classes={{
@@ -45,7 +51,7 @@ const RoomDescription = ({
     <CardContent>
       <Content color="textPrimary">{description}</Content>
     </CardContent>
-  </Card>
+  </Container>
 );
 
 RoomDescription.defaultProps = {

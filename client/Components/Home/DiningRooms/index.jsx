@@ -26,7 +26,7 @@ const Item = styled.div`
   background-image: ${({ icon }) => `url("${icon}")`};
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   margin-bottom: 50px;
   display: flex;
   flex-direction: column;
@@ -36,7 +36,7 @@ const Item = styled.div`
 `;
 
 const Title = styled.header`
-  color: ${({ color }) => color};
+  color: white;
   font-weight: bold;
   font-family: "Amatic SC";
   font-size: 3rem;
@@ -73,7 +73,7 @@ const DiningRooms = ({ theme, history }) => {
           key={id}
           color={theme.palette.secondary.main}
         >
-          <Title color={theme.palette.primary.main}>
+          <Title>
             {name}
           </Title>
           <Button
