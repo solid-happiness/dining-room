@@ -81,7 +81,7 @@ const DiningRooms = ({ theme, history }) => {
             color="primary"
             onClick={() => history.push(`/${slug}/`)}
           >
-            Описание
+            Подробнее
           </Button>
         </Item>
       ))}
