@@ -54,7 +54,10 @@ create database solid_happines_db owner solid_happines;
 
 #### 5. Заполнить базу данных
 ```
-$ sudo -u postgres psql solid-happines_db < fixtures/dump.pgsql
+$ cd fixtures
+$ unzip db-dump.zip
+$ cd ..
+$ sudo -u postgres psql solid_happines_db < fixtures/dump.pgsql
 $ mkdir media
 $ cp -r fixtures/pictures/* media
 ```
