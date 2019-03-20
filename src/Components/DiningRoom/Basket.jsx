@@ -47,6 +47,7 @@ const AddToCartButton = styled(Fab)`
         position: fixed;
         right: 25px;
         bottom: 25px;
+        z-index: 999;
     }
 `;
 

@@ -20,7 +20,7 @@ const HeaderSection = styled.section`
   background-size: contain;
   background-repeat: no-repeat;
 
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 800px) {
     background-size: cover;
   }
 `;
