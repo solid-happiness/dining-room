@@ -18,12 +18,13 @@ NUMBER_OF_LAST_STRING = -1
 DINING_ROOM_SLUG = 'dining-room'
 
 CSV_FILES = [
-    'Понедельник',
-    'Вторник',
-    'Среда',
-    'Четверг',
-    'Пятница',
-    'Суббота',
+    { 'slug': 'mon', 'name': 'Понедельник' },
+    { 'slug': 'tue', 'name': 'Вторник' },
+    { 'slug': 'wed', 'name': 'Среда' },
+    { 'slug': 'thu', 'name': 'Четверг' },
+    { 'slug': 'fri', 'name': 'Пятница' },
+    { 'slug': 'sat', 'name': 'Суббота' },
+    { 'slug': 'sun', 'name': 'Воскресенье' },
 ]
 
 Dish = apps.get_model('dish', 'Dish')
@@ -33,8 +34,11 @@ DiningRoomMenu = apps.get_model('eatery', 'DiningRoomMenu')
 DiningRoom = apps.get_model('eatery', 'DiningRoom')
 WeekDay = apps.get_model('eatery', 'WeekDay')
 
-for filename in CSV_FILES:
-    weekday, created = WeekDay.objects.get_or_create(day=filename)
+for weekday_raw in CSV_FILES:
+    slug = weekday_raw['slug']
+    filename = weekday_raw['name']
+
+    weekday, created = WeekDay.objects.get_or_create(day=slug)
     PATH = os.path.join(os.path.dirname(settings.BASE_DIR), f'fixtures/{filename}.csv')
 
     with open(PATH) as csvfile:
