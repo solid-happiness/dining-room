@@ -2,6 +2,17 @@ from django.db import models
 from datetime import time, datetime
 import itertools
 
+# Дни недели с краткими ключами и полнымим наименованиями.
+DAY_NAMES = (
+    ('mon', 'Понедельник'),
+    ('tue', 'Вторник'),
+    ('wed', 'Среда'),
+    ('thu', 'Четверг'),
+    ('fri', 'Пятница'),
+    ('sat', 'Суббота'),
+    ('sun', 'Воскресенье')
+)
+
 
 class MenuItem(models.Model):
     """
@@ -146,17 +157,6 @@ class Shedule(models.Model):
         verbose_name_plural = 'Расписания работы'
 
 
-# Дни недели с краткими ключами и полнымим наименованиями.
-DAY_NAMES = (
-    ('mon', 'Понедельник'),
-    ('tue', 'Вторник'),
-    ('wed', 'Среда'),
-    ('thu', 'Четверг'),
-    ('fri', 'Пятница'),
-    ('sat', 'Суббота'),
-    ('sun', 'Воскресенье')
-)
-
 # добавим поля времени открытия и закрытия по дням недели в модель Shedule
 for day, day_name in DAY_NAMES:
     Shedule.add_to_class(f'{day}_open', models.TimeField(
@@ -201,6 +201,9 @@ class DiningRoom(models.Model):
         return self.name
 
     def to_dict(self):
+        """
+        Метод для удобства возврата экземпляра модели и последующей конвертации в json.
+        """
         open_time, close_time = self.schedule.get_open_time()
         return {
             "id": self.pk,
