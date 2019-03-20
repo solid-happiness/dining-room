@@ -37,7 +37,7 @@ for filename in CSV_FILES:
         category = ''
         for item in raw_data:
             if item[1]:
-                dish = Dish.objects.create(
+                dish, created = Dish.objects.get_or_create(
                     name=item[1], proteins=round(random.uniform(1, 15), 1), fats=round(random.uniform(1, 15), 1),
                     carbohydrates=round(random.uniform(1, 15), 1), calorific=random.randint(5000, 200000)
                 )
