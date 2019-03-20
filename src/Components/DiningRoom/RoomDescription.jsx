@@ -15,62 +15,63 @@ const Content = styled(Typography)`
     }
 `;
 
-const RoomDescription = ({ 
-    name,
-    img,
-    description,
-    classes,
-    openTime,
-    closeTime,
- }) => (
-    <Card>
-        <CardHeader
-            title={name}
-            classes={{
-                title: classes.title,
-            }}
-            titleTypographyProps={{
-                color: 'secondary',
-                variant: 'h6',
-            }}
-            subheader={`Время работы: ${openTime}:${closeTime}`}
-        />
-        {img && (
-            <CardMedia
-                image={img}
-                title={description}
-                className={classes.media}
-            />
-        )}
-        <CardContent>
-            <Content color="textPrimary">{description}</Content>
-        </CardContent>
-    </Card>
-)
+const RoomDescription = ({
+  name,
+  img,
+  description,
+  classes,
+  openTime,
+  closeTime,
+}) => (
+  <Card>
+    <CardHeader
+      title={name}
+      classes={{
+        title: classes.title,
+      }}
+      titleTypographyProps={{
+        color: 'secondary',
+        variant: 'h6',
+      }}
+      subheader={`Время работы: ${openTime}:${closeTime}`}
+    />
+    {img && (
+    <CardMedia
+      image={img}
+      title={description}
+      className={classes.media}
+    />
+    )}
+    <CardContent>
+      <Content color="textPrimary">{description}</Content>
+    </CardContent>
+  </Card>
+);
 
 RoomDescription.defaultProps = {
-    name: '',
-    description: '',
-    img: '',
-    openTime: '',
-    closeTime: '',
-}
+  name: '',
+  description: '',
+  img: '',
+  openTime: '',
+  closeTime: '',
+};
 
 RoomDescription.propTypes = {
-    name: PropTypes.string,
-    description: PropTypes.string,
-    img: PropTypes.string,
-    openTime: PropTypes.string,
-    closeTime: PropTypes.string,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  img: PropTypes.string,
+  openTime: PropTypes.string,
+  closeTime: PropTypes.string,
+  classes: PropTypes.object.isRequired,
 };
 
 const styles = {
-    title: {
-        fontWeight: 500,
-    },
-    media: {
-        padding: '120px',
-    }
-}
+  title: {
+    fontWeight: 500,
+  },
+  media: {
+    padding: '120px',
+  },
+};
 
 export default withStyles(styles)(RoomDescription);

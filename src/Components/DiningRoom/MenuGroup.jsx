@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -47,40 +48,45 @@ const DescriptionParagraph = styled.p`
 `;
 
 const MenuGroup = ({ menuGroup, addToCart }) => (
-    <MenuGroupContainer>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} >
-            <Summary variant="body1" color="primary">
-                {menuGroup.name}
-            </Summary>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-            <GridList>
-                {menuGroup.dishes.map(dish => (
-                    <GridListTile key={dish.id}>
-                        <img src={dish.img} alt={dish.name} />
-                        <GridListTileBar
-                            title={dish.name}
-                            subtitle={getDishDescription(dish).map(str => (
-                                <DescriptionParagraph key={str}>
-                                    {str}
-                                </DescriptionParagraph>
-                            ))}
-                            actionIcon={
-                                <IconButton
-                                    onClick={() => addToCart(dish)}
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faShoppingBasket}
-                                        color="white"
-                                    />
-                                </IconButton>
-                            }
-                        />
-                    </GridListTile>
-                ))}
-            </GridList>
-        </ExpansionPanelDetails>
-    </MenuGroupContainer>
+  <MenuGroupContainer>
+    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+      <Summary variant="body1" color="primary">
+        {menuGroup.name}
+      </Summary>
+    </ExpansionPanelSummary>
+    <ExpansionPanelDetails>
+      <GridList>
+        {menuGroup.dishes.map(dish => (
+          <GridListTile key={dish.id}>
+            <img src={dish.img} alt={dish.name} />
+            <GridListTileBar
+              title={dish.name}
+              subtitle={getDishDescription(dish).map(str => (
+                <DescriptionParagraph key={str}>
+                  {str}
+                </DescriptionParagraph>
+              ))}
+              actionIcon={(
+                <IconButton
+                  onClick={() => addToCart(dish)}
+                >
+                  <FontAwesomeIcon
+                    icon={faShoppingBasket}
+                    color="white"
+                  />
+                </IconButton>
+)}
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+    </ExpansionPanelDetails>
+  </MenuGroupContainer>
 );
+
+MenuGroup.propTypes = {
+  menuGroup: PropTypes.object.isRequired,
+  addToCart: PropTypes.func.isRequired,
+};
 
 export default MenuGroup;

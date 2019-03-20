@@ -11,7 +11,7 @@ module.exports = require('./webpack.base')({
   mode: 'production',
   entry: [
     require.resolve('react-app-polyfill/ie11'),
-    path.join(process.cwd(), 'src/app.js'),
+    path.join(process.cwd(), 'src/index.js'),
   ],
 
   output: {
@@ -69,7 +69,7 @@ module.exports = require('./webpack.base')({
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'app/index.html',
+      template: 'src/index.html',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -96,7 +96,7 @@ module.exports = require('./webpack.base')({
         main: [':rest:'],
         additional: ['*.chunk.js'],
       },
-      safeToUseOptionalCaches: true,
+      safeToUseOptiosnalCaches: true,
     }),
 
     new CompressionPlugin({
@@ -130,7 +130,6 @@ module.exports = require('./webpack.base')({
   ],
 
   performance: {
-    assetFilter: assetFilename =>
-      !/(\.map$)|(^(main\.|favicon\.))/.test(assetFilename),
+    assetFilter: assetFilename => !/(\.map$)|(^(main\.|favicon\.))/.test(assetFilename),
   },
 });

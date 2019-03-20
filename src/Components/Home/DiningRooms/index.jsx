@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from '@material-ui/core';
@@ -9,21 +10,21 @@ import dumplingIcon from './dumpling-icon.svg';
 import hotDishIcon from './hot-dish-icon.svg';
 
 const diningRooms = [
-  { 
+  {
     name: 'Кафетерий',
     icon: coffeeIcon,
     slug: 'coffee',
   },
-  { 
+  {
     name: 'Пельменная',
     icon: dumplingIcon,
     slug: 'dumpling',
   },
-  { 
+  {
     name: 'Столовая',
     icon: hotDishIcon,
     slug: 'hot-dish',
-  }
+  },
 ];
 
 const Container = styled.div`
@@ -51,7 +52,7 @@ const Item = styled.div`
   margin-bottom: 50px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: centser;
   justify-content: space-between;
   padding: 18px 0 25px 0;
 `;
@@ -61,9 +62,15 @@ const Title = styled.header`
   font-weight: bold;
   font-family: "Amatic SC";
   font-size: 3rem;
+  text-align: center;
 `;
 
-const DiningRooms = ({ theme, history }) => (
+const DiningRooms = ({ theme, history }) => {
+  React.useEffect(() => {
+    document.title = 'Похавай!';
+  }, []);
+
+  return (
     <Container>
       {diningRooms.map(({ name, icon, slug }) => (
         <Item
@@ -85,6 +92,12 @@ const DiningRooms = ({ theme, history }) => (
         </Item>
       ))}
     </Container>
-);
+  );
+};
+
+DiningRooms.propTypes = {
+  theme: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+};
 
 export default withRouter(withTheme()(DiningRooms));

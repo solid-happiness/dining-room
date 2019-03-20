@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -30,14 +31,18 @@ const Slogan = styled(Typography)`
 `;
 
 const Header = ({ theme }) => (
-    <Container>
-      <Title
-        color={theme.palette.primary.main}
-      >
+  <Container>
+    <Title
+      color={theme.palette.primary.main}
+    >
         ПОХАВАЙ!
-      </Title>
-      <Slogan>самый вкусный сайт</Slogan>
-    </Container>
-)
+    </Title>
+    <Slogan>самый вкусный сайт</Slogan>
+  </Container>
+);
+
+Header.propTypes = {
+  theme: PropTypes.object.isRequired,
+};
 
 export default withTheme()(Header);

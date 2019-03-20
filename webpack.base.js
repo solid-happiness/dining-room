@@ -10,7 +10,7 @@ module.exports = options => ({
   entry: options.entry,
   output: Object.assign(
     {
-      path: path.resolve(process.cwd(), 'build'),
+      path: path.join(__dirname, 'build'),
       publicPath: '/',
     },
     options.output,

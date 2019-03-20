@@ -11,7 +11,7 @@ module.exports = require('./webpack.base')({
   mode: 'development',
   entry: [
     require.resolve('react-app-polyfill/ie11'),
-    path.join(process.cwd(), 'src/index.js'),
+    path.join(__dirname, 'src/index.jsx'),
   ],
   output: {
     filename: '[name].js',
@@ -40,5 +40,5 @@ module.exports = require('./webpack.base')({
   devServer: {
     contentBase: path.join(__dirname, 'build'),
     port: 3000,
-  }
+  },
 });
