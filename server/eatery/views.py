@@ -27,7 +27,7 @@ def get_eatery(request, eatery_name):
 
     try:
         dining_room_menu = DiningRoomMenu.objects.get(dining_room=eatery, weekday=weekday_today).get_menu()
-    except DiningRoom.DoesNotExist:
+    except DiningRoomMenu.DoesNotExist:
         return JsonResponse({})
 
     return JsonResponse({**eatery.to_dict(), 'menu': dining_room_menu})
