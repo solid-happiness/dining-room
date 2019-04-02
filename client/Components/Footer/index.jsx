@@ -68,7 +68,7 @@ const profiles = [
     icon: faVk,
   },
   {
-    name: 'Dmitry Chebakov',
+    name: 'Chebakov Dmitry',
     link: 'https://github.com/dchebakov',
     icon: faGithub,
   },
